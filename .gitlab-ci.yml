@@ -1,0 +1,22 @@
+# This file is a template, and might need editing before it works on your project.
+image: docker-desa.minseg.gob.ar/minseg/golang-dep:1.10.2
+
+
+stages:
+    - test
+
+format:
+    stage: test
+    tags:
+        - docker
+    before_script:
+        - ln -s /builds/juan.guzman /go/src/
+        - ls /builds/juan.guzman
+        - cd /go/src/juan.guzman/$CI_PROJECT_NAME
+        - dep ensure
+    script:
+        # Add here all the dependencies, or use glide/govendor to get
+        # them automatically.
+        # - curl https://glide.sh/get | sh
+
+        - go test -race $(go list ./... | grep -v /vendor/)
